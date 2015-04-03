@@ -1,0 +1,65 @@
+﻿
+==============================================================================
+Reading Network   ---    Z:\home\andrzej\Documents\WEiTI\TASS\Projekt\coa_matrix.net
+==============================================================================
+ Working...
+          19265 lines read.
+ Time spent:  0:00:00
+
+==============================================================================
+Weak Components
+==============================================================================
+ Working...
+ Number of components: 1
+ Size of the largest component: 638 vertices (100.000%).
+ Time spent:  0:00:00
+
+==============================================================================
+Betweenness centrality of 11. Z:\home\andrzej\Documents\WEiTI\TASS\Projekt\coa_matrix.net (638)
+==============================================================================
+ Working...
+31.35% finished. Time spent: 0:00:00
+62.70% finished. Time spent: 0:00:00
+94.04% finished. Time spent: 0:00:00
+-----------------------------------------------
+Network Betweenness Centralization = 0.00788578
+-----------------------------------------------
+ Time spent:  0:00:00
+
+==============================================================================
+Reading Network   ---    Z:\home\andrzej\Documents\WEiTI\TASS\Projekt\coa_matrix_half.net
+==============================================================================
+ Working...
+           5229 lines read.
+ Time spent:  0:00:00
+
+==============================================================================
+Weak Components
+==============================================================================
+ Working...
+ Number of components: 1
+ Size of the largest component: 319 vertices (100.000%).
+ Time spent:  0:00:00
+
+==============================================================================
+Strong Components
+==============================================================================
+ Working...
+ Number of components: 1
+ Size of the largest component: 319 vertices (100.000%).
+ Time spent:  0:00:00
+
+==============================================================================
+Betweenness centrality of 12. Z:\home\andrzej\Documents\WEiTI\TASS\Projekt\coa_matrix_half.net (319)
+==============================================================================
+ Working...
+62.70% finished. Time spent: 0:00:00
+-----------------------------------------------
+Network Betweenness Centralization = 0.01711340
+-----------------------------------------------
+ Time spent:  0:00:00
+
+==============================================================================
+Saving Partition(s)/Vector(s) to tab delimited file   ---    Z:\home\andrzej\Documents\WEiTI\TASS\Projekt\vec_half.txt
+==============================================================================
+ Time spent:  0:00:00

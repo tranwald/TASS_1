@@ -36,7 +36,7 @@ def print_btwns_table(btwns_list):
     pt.add_column("Node", [x[0] for x in btwns_list])
     pt.add_column("Betweeness Centrality", [x[1] for x in btwns_list])
     pt.padding_width = 1
-    pt.float_format = "1.5"
+    pt.float_format = "1.6"
     print "Top10 nodes with the highest betweeness centrality:"
     print pt
 
@@ -49,23 +49,24 @@ coa_mat, coo_mat = M["Coactivation_matrix"], M["Coord"]
 
 # load matrix as a nx graph
 G = nx.from_numpy_matrix(coa_mat)
+nx.convert_node_labels_to_integers(G, first_label=0, ordering='default', label_attribute=None)
 
 # save graph to pajek .net format
 nx.write_pajek(G, "coa_matrix.net")
 
-print "\nCalculations made on all nodes ({0}):".format(G.number_of_nodes())
+print "\nCalculations made on all nodes ({0}):\n".format(G.number_of_nodes())
 # calculate betweeness and print result in table
 top10_btwns_list = top10_btwns(G)
 print_btwns_table(top10_btwns_list)
 
 # print len on the longest connected component
-print "Length of the longest connected component: ", longest_comp_len(G)
+print "\nLength of the longest connected component:", longest_comp_len(G)
 print
 
 # draw nodes to remove from graph
 nodes_to_remove = random.sample(G.nodes(), G.number_of_nodes() / 2)
 
-print "\nCalculations after removing half ({0}) of all nodes:".format(G.number_of_nodes() / 2)
+print "\nCalculations after removing half ({0}) of all nodes:\n".format(G.number_of_nodes() / 2)
 # remove nodes from graph
 G.remove_nodes_from(nodes_to_remove)
 
@@ -74,7 +75,7 @@ top10_btwns_list = top10_btwns(G)
 print_btwns_table(top10_btwns_list)
 
 # print len on the longest connected component
-print "Length of the longest connected component: ", longest_comp_len(G)
+print "\nLength of the longest connected component:", longest_comp_len(G)
 
 # save graph to pajek .net format
 nx.write_pajek(G, "coa_matrix_half.net")
