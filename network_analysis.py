@@ -1,4 +1,6 @@
-import networkx as nx
+#!/usr/bin/python
+# -*- coding: iso-8859-15 -*
+
 import scipy.io as sio
 import operator
 import random

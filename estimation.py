@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
 from math import log10
-import powerlaw
 from scipy.stats import binned_statistic
 
 # load graph from file
@@ -30,20 +29,20 @@ plt_2 = fig_1.add_subplot(131)
 degree, freq, patch = plt_2.hist(nodes_degree.values(), bins=100, alpha=0.6)
 
 plt_2.set_title("Node Degree Histogram")
-plt_2.set_xlabel("Degree")
-plt_2.set_ylabel("Frequency")
+plt_2.set_xlabel("x")
+plt_2.set_ylabel("P(x)")
 
 plt_1 = fig_1.add_subplot(132)
 plt_1.loglog(degree, freq[:-1], "ro")
 plt_1.set_title("Loglog Degree Distribution")
-plt_1.set_xlabel("Degree")
-plt_1.set_ylabel("Frequency")
+plt_1.set_xlabel("x")
+plt_1.set_ylabel("P(x)")
 
 plt_3 = fig_1.add_subplot(133)
 plt_3.plot(degree, freq[:-1], "go")
 plt_3.set_title("Degree Distribution")
-plt_3.set_xlabel("Degree")
-plt_3.set_ylabel("Frequency")
+plt_3.set_xlabel("x")
+plt_3.set_ylabel("P(x)")
 plt.show()
 
 # plots with log bins
@@ -53,20 +52,20 @@ plt_2 = fig_2.add_subplot(131)
 plt_2.hist(nodes_degree.values(), bins=n_bins, alpha=0.6)
 plt_2.set_xscale("log")
 plt_2.set_title("Node Degree Histogram")
-plt_2.set_xlabel("Degree")
-plt_2.set_ylabel("Frequency")
+plt_2.set_xlabel("x")
+plt_2.set_ylabel("P(x)")
 
 plt_1 = fig_2.add_subplot(132)
 plt_1.loglog(d_mean[:-1], f_mean, "ro")
-plt_1.set_title("Loglog Degree Distribution")
-plt_1.set_xlabel("Degree")
-plt_1.set_ylabel("Frequency")
+plt_1.set_title("Loglog Node Degree Distribution")
+plt_1.set_xlabel("x")
+plt_1.set_ylabel("P(x)")
 
 plt_3 = fig_2.add_subplot(133)
 plt_3.plot(d_mean[:-1], f_mean, "go")
-plt_3.set_title("Degree Distribution")
-plt_3.set_xlabel("Degree")
-plt_3.set_ylabel("Frequency")
+plt_3.set_title("Degree Node Distribution")
+plt_3.set_xlabel("x")
+plt_3.set_ylabel("P(x)")
 plt.show()
 
 # function to estimate alpha
