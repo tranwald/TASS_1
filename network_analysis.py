@@ -4,7 +4,6 @@ import operator
 import random
 from prettytable import PrettyTable
 
-
 def top10_btwns(graph):
     """
     Returns 10 nodes with the highest betweeness centrality
@@ -47,8 +46,15 @@ with open("Coactivation_matrix.mat") as filename:
 # peel sparse and coordinates matrixes from M dict
 coa_mat, coo_mat = M["Coactivation_matrix"], M["Coord"]
 
-# load matrix as a nx graph
-G = nx.from_numpy_matrix(coa_mat)
+# check if graph is undirected and create graph from matrix
+if (coa_mat == coa_mat.transpose()).all():
+    G = nx.from_numpy_matrix(coa_mat, create_using=nx.Graph())
+    print "Graph is undirected"
+else:
+    G = nx.from_numpy_matrix(coa_mat, create_using=nx.DiGraph())
+    print "Graph is directed"
+
+# add node labels (needed for Pajek)
 nx.convert_node_labels_to_integers(G, first_label=0, ordering='default', label_attribute=None)
 
 # save graph to pajek .net format
@@ -79,3 +85,4 @@ print "\nLength of the longest connected component:", longest_comp_len(G)
 
 # save graph to pajek .net format
 nx.write_pajek(G, "coa_matrix_half.net")
+
