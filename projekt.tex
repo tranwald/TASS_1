@@ -3,36 +3,168 @@
 \usepackage[polish]{babel}
 \usepackage[OT4]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{subfloat}
+\usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{verbatimbox}
+\usepackage{numprint}
+\usepackage{hyperref}
+
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}} 
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % Część główna
 
-\title{Techniki Analizy Sieci Społecznych (TASS)\\Projekt 1}
+\title{Techniki Analizy Sieci Społecznych (TASS)\\Projekt 1: Analiza statystyczna grafu przy użyciu standardowych narzędzi}
 \author{Andrzej Smyk}
-\date{2 kwietnia 2015}
+\date{9 kwietnia 2015}
 \begin{document}
 	\maketitle
-	\section{Temat projektu}
-
-	Dopasowywanie sekwencji za pomocą algorytmów Gotoha oraz \linebreak\mbox{Altschula - Ericksona}. Porównanie z inną dostępną implementacją (np. z pakietem Biostrings w języku R).
-
+	
 	\section{Cel projektu}
+	Celem projektu jest 
+
+	\section{Opis danych}
+	Dane do pojektu pochodzą ze strony \linebreak\url{https://sites.google.com/site/bctnet/datasets}. Dotyczą one funkcyjnej współpracy różnych obszarów całego ludzkiego mózgu. Plik zawiera macierz sąsiedztwa oraz macierz współrzędnych. W sumie graf składa się z 638 wierzchołków oraz z 18625 krawędzi. 
+
+	Dane zapisane były w formacie MATLAB'a \texttt{mat}, więc na początek załadowałem go do Pythona za pomocą funkcji \texttt{loadmat()} z modułu \texttt{scipy.io}. Następnie, wczytane macierze wykozystałem do stworzenia nieskierowanego grafu za pomocą funkcji pakietu NetworkX. By sprawdzić czy graf jest rzeczywiście nieskierowany, porównałem kolejne elementy z transponowanej macierzy sąsiedztwa z nią samą. Dzięki temu upewniłem się, że popawnie wczytałem graf.
+
+	Ponieważ Pajek nie ma wsparcia dla formatu \texttt{mat}, wykorzystałem funkcję \texttt{write\_pajek()} do zapisania wygenerowanego grafu w formacie \texttt{net}. Wcześniej, dodałem jeszcze etykiety z numeracją węzłów. Podobnie postąpiłem z grafem, z którego usunąłem połowę wierzchołków. Losowy wybór wierzchołków do usunięcia zawarantowałem korzystając z funkcji \texttt{sample} z modułu \texttt{random}. Za jej pomocą wygenerowałem próbkę wierzchołków o wielkości równej połowie grafu, a następnie usunąłem wylosowane wierzchołki.
+
+	Wszystkie wygenerowane pliki dołączyłem do sprawozdania. Plik \linebreak\texttt{Coactivation\_matrix.mat} zawiera orginalne macierze. Pliki mbox{\texttt{coa\_matrix.net}} i \mbox{\texttt{coa\_matrix\_half.net}} zostały wygenerowana przy pomocy NetworkX i zawierają grafy odpowiednio ze wszystkimi oraz z połową wierzchołków.
+
+	\section{Estymacja wykładnika charakterystycznego}
 
 	
 
-	\section{Funkcjonalność rozwiązania}
+	\section{Pośrednictwo - \emph{Betweeness Centrality}}
+			W pakiecie NetworkX do wyznaczenia pośrednictwa wierzchołków wykorzystałem funkcję \texttt{betweenness\_centrality(G, normalized=True)}. Następnie uzyskany w ten sposób słownik zamienisłem na posortowną listę i wypisałem za pomocą \texttt{PrettyTables}. 
 
-	
-
-	\section{Dopasowanie par sekwencji}
-
-	ują one dodatkowo dwie macierze $I$ oraz $J$, złożoność pamięciowa jest trzykrotnie wyższa w porównaniu do algorytmów stosujących liniową funkcję kary.
-
-	\section{Testowanie}
-
-	Testowanie gotowego rozwiązania będzie składało się z dwóch części:
-	\begin{enumerate}
-		\item Testów wydajnościowych: ich celem będzie sprawdzenie czasów wykonania obu algorytmów dla sekwencji o różnej długości. Uzyskane czasy pozwolą na empiryczne oszacowanie złożoności czasowej algorytmów oraz porównanie ich z czasami wykonania dostępnych implementacji.
-		\item Testów poprawnościowych: ich celem będzie weryfikacja, czy oba algorytmy prawidłowo dopasowują obie sekwencje tj. wykrywają zarówno mutacje, jak i insercje oraz delecje. W tym celu przetestujemy ich działanie na parach sekwencji, w których druga będzie zmodyfikowaną o mutacje oraz delecje i insercje wersją pierwszej.
-	\end{enumerate}
-
+			W programie Pajek na początku wyznaczyłem wektor zawierający wartości pośednictwa dla każdego wierzchołka. W tym celu wybałem w menu programu kolejno: \textit{Network \textgreater Create Vector \textgreater Centrality \textgreater Betweeness}. Ponieważ Pajek nie udostępnia opcji sortowania danych wynikowych z obliczeń (lub ja po prostu takiej funkcji nie znalazłem), wektor z danymi wyeksportowałem do pliku \texttt{csv}, który następnie załadowałem do środowiska \textit{R Studio}, gdzie dokonałem wyznaczenia 10 wierzchołków o największym pośrednictwie. 
+			Poniższa tabela przedstawia 10 wierzchołków o największym pośrednictwie wyznaczonych dla grafu ze wszystkimi wierzchołkami (638):
+			\begin{table}[H]
+			\parbox{.45\linewidth}{
+			\caption*{Pośrednictwo w \mbox{NetworkX}}
+			\begin{tabular}{ c | c } \hline
+				Numer wierzchołka & Pośrednictwo \\ \hline
+				330 & 0.009784  \\
+				621 & 0.009158 \\
+				546 & 0.008546 \\
+				339 & 0.008065 \\
+				629 & 0.007858 \\
+				482 & 0.007780 \\
+				230 & 0.007731 \\
+				235 & 0.007443 \\
+				50 & 0.007427 \\
+				416 & 0.007342 \\\hline
+			\end{tabular}
+			}
+			\hfill
+			\parbox{.45\linewidth}{
+			\caption*{Pośrednictwo w Pajek}
+			\begin{tabular}{ c | c } \hline
+				Numer wierzchołka & Pośrednictwo \\ \hline
+				330 & 0.0097836 \\
+				621 & 0.0091577 \\
+				546 & 0.0085458 \\
+				339 & 0.0080647 \\
+				629 & 0.0078578 \\
+				482 & 0.0077797 \\
+				230 & 0.0077312 \\
+				235 & 0.0074427 \\
+				50  & 0.0074266 \\
+				416  & 0.0073421 \\\hline
+			\end{tabular}
+			}
+			\end{table}
+			Po usunięciu połowy losowo wybranych węzłów powtórzyłem obliczenia dla grafu składającego się z 319 wierzchołków:
+			\begin{table}[H]
+			\parbox{.45\linewidth}{
+			\caption*{Pośrednictwo w \mbox{NetworkX}}
+			\begin{tabular}{ c | c } \hline
+				Numer wierzchołka & Pośrednictwo \\ \hline
+				431 & 0.019370 \\
+				230 & 0.018752 \\
+				451 & 0.017337 \\
+				418 & 0.016012 \\
+				505 & 0.015427 \\
+				11  & 0.015216 \\
+				629 & 0.014829 \\
+				202 & 0.014119 \\
+				623 & 0.014114 \\
+				452 & 0.013814 \\\hline
+			\end{tabular}
+			}
+			\hfill
+			\parbox{.45\linewidth}{
+			\caption*{Pośrednictwo w Pajek}
+			\begin{tabular}{ c | c } \hline
+				Numer wierzchołka & Pośrednictwo \\ \hline
+				431 & 0.019370 \\
+  				230 & 0.018752 \\
+  				451 & 0.017337 \\ 
+				418 & 0.016012 \\
+				505 & 0.015427 \\
+				11 & 0.015216  \\
+				629 & 0.014829 \\
+				202 & 0.014119 \\
+				623 & 0.014114 \\
+				452 & 0.013814 \\\hline
+			\end{tabular}
+			}
+			\end{table}
+	\section{Wyznaczenie długości najdłuższej spójnej składowej}
+	Do wyznaczenia długości największego silnie spójnego komponentu w pakiecie NetworkX wykozystałem funkcję \texttt{connected\_components(G)}, która zwraca wszystkie komponenty (spójne składowe) grafu. Następnie wyznaczyłem długość każdego z nich i wybrałem najdłuższy. W Pajeku do analogicznej operacji wykozystałem \textit{Network \textgreater Create Partition \textgreater Components \textgreater Weak}. Pajek po wyznaczeniu wszystkich komponentów, w oknie raportu od razu melduje jaka jest długość najdłuższego komponentu. Wynik dla grafu ze wszystkimi wierzchołkami:\\\\
+	\begin{verbbox}
+		================================================================
+		Weak Components
+		================================================================
+		 Working...
+		 Number of components: 1
+		 Size of the largest component: 638 vertices (100.000%).
+		 Time spent:  0:00:00
+	\end{verbbox}
+	\fbox{\theverbbox}
+	\\\\
+	Wynik dla grafu z połową wierzchołków:\\\\
+	\begin{verbbox}
+		================================================================
+		Weak Components
+		================================================================
+		 Working...
+		 Number of components: 1
+		 Size of the largest component: 319 vertices (100.000%).
+		 Time spent:  0:00:00
+	\end{verbbox}
+	\fbox{\theverbbox}
+	\\\\
+	Oba narzędzia pokazały, że dla podanego grafu długość najdłuższej spójnej składowej wynosi 638. Oznacza to, że najdłuższa ścierzka w tym gafie zawiera jego wszystkie wierzchołki, lub inaczej, istnieje możliwość dotarcia z dowolnego węzła do innego, dowolnego, wierzchołka.
+	\section{Czasy obliczeń}
+		Do pomiaru czasu obliczeń w Pythonie wykorzystałem moduł \texttt{timeit}, do którego przekazałem odpowiednie parametry środowiska:
+		\begin{verbatim}
+			setup = '''
+			from __main__ import longest_comp_len, G
+			import networkx as nx
+			'''
+			timeit.timeit("nx.betweenness_centrality(G, normalized=True)", setup, number=1)
+			timeit.timeit("longest_comp_len(G)", setup, number=1)
+		\end{verbatim}
+		Uzyskane czasu obliczeń pzedstawia tabela poniżej:
+		\npdecimalsign{.}
+		\nprounddigits{5}
+		\\\\
+		\begin{tabular}{ L{5 cm} | c } 
+			Parametr (\emph{rozmiar}) & Python \\\hline
+			10 wierzchołków o największym pośrednictwie (\emph{638}) & 23.039811 \\
+			10 wierzchołków o największym pośrednictwie (\emph{319}) & 3.777321 \\
+			Rozmiar największej składowej spójnej (\emph{638}) & 0.006186 \\
+			Rozmiar największej składowej spójnej (\emph{319}) & 0.002010 \\ \hline
+		\end{tabular}
+		\npnoround
+		\\\newline
+		Ponieważ Pajek przy wszystkich obliczeniach podaje jak długo wykonywały sie obliczenia, nie ma było potrzeby stosowania dodatkowych narzędzi do przeprowadzenia pomiarów. Oazuje się, że wszystkie obliczenia zostały wykonane w czasie krótszym niż sekunda. O ile dla wyznaczenia długości najdłuższej spójnej składowej, nie odbiegają one od czasów w NetworkX, to już zdecydowanie szybsze wyznaczenia wielkości pośrednictwa nastąpiło znacznie szybciej. Różnica ta może wynikać z dobrej optymalizacji algoytmów w Pajeku oraz z ograniczeń interpretera Pythona. Raport z programu Pajek znajduje się w pliku \texttt{pajek\_report.rep}.
 \end{document}
+

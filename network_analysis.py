@@ -1,6 +1,7 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-15 -*
 
+import timeit
+import networkx as nx
 import scipy.io as sio
 import operator
 import random
@@ -46,7 +47,7 @@ with open("Coactivation_matrix.mat") as filename:
     M = sio.loadmat(filename)
 
 # peel sparse and coordinates matrixes from M dict
-coa_mat, coo_mat = M["Coactivation_matrix"], M["Coord"]
+coa_mat = M["Coactivation_matrix"]
 
 # check if graph is undirected and create graph from matrix
 if (coa_mat == coa_mat.transpose()).all():
@@ -64,13 +65,20 @@ nx.write_pajek(G, "coa_matrix.net")
 
 print "\nCalculations made on all nodes ({0}):\n".format(G.number_of_nodes())
 # calculate betweeness and print result in table
+# prepare timer
+setup = '''
+from __main__ import longest_comp_len, G
+import networkx as nx
+'''
+# run timer
+print timeit.timeit("nx.betweenness_centrality(G, normalized=True)", setup, number=1)
 top10_btwns_list = top10_btwns(G)
 print_btwns_table(top10_btwns_list)
 
 # print len on the longest connected component
 print "\nLength of the longest connected component:", longest_comp_len(G)
 print
-
+print timeit.timeit("longest_comp_len(G)", setup, number=1)
 # draw nodes to remove from graph
 nodes_to_remove = random.sample(G.nodes(), G.number_of_nodes() / 2)
 
@@ -79,12 +87,13 @@ print "\nCalculations after removing half ({0}) of all nodes:\n".format(G.number
 G.remove_nodes_from(nodes_to_remove)
 
 # calculate betweeness and print result in table
+print timeit.timeit("nx.betweenness_centrality(G, normalized=True)", setup, number=1)
 top10_btwns_list = top10_btwns(G)
 print_btwns_table(top10_btwns_list)
 
 # print len on the longest connected component
 print "\nLength of the longest connected component:", longest_comp_len(G)
-
+print timeit.timeit("longest_comp_len(G)", setup, number=1)
 # save graph to pajek .net format
 nx.write_pajek(G, "coa_matrix_half.net")
 
