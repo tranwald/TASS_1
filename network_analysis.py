@@ -1,11 +1,10 @@
 #!/usr/bin/python
+#  -*- coding: iso-8859-15 -*-
 
-import timeit
 import networkx as nx
-import scipy.io as sio
 import operator
 import random
-from prettytable import PrettyTable
+import timeit
 
 def top10_btwns(graph):
     """
@@ -34,6 +33,7 @@ def print_btwns_table(btwns_list):
 
     :param btwns_list: list of tuples as (node_nr, betweeness)
     """
+    from prettytable import PrettyTable
     pt = PrettyTable()
     pt.add_column("Node", [x[0] for x in btwns_list])
     pt.add_column("Betweeness Centrality", [x[1] for x in btwns_list])
@@ -42,12 +42,20 @@ def print_btwns_table(btwns_list):
     print "Top10 nodes with the highest betweeness centrality:"
     print pt
 
+# download file with data if not in folder
+from os import listdir
+if "Coactivation_matrix.mat" not in listdir('.'):
+    import urllib
+    link = 'https://sites.google.com/site/bctnet/Home/functions/Coactivation_matrix.mat'
+    urllib.urlretrieve(link, '"Coactivation_matrix.mat"')
+
 # load matrixes through loadmat function from scipy.io
 with open("Coactivation_matrix.mat") as filename:
-    M = sio.loadmat(filename)
+    import scipy.io as sio
+    coa_mat = sio.loadmat(filename)["Coactivation_matrix"]
 
 # peel sparse and coordinates matrixes from M dict
-coa_mat = M["Coactivation_matrix"]
+#coa_mat = M["Coactivation_matrix"]
 
 # check if graph is undirected and create graph from matrix
 if (coa_mat == coa_mat.transpose()).all():

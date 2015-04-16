@@ -215,6 +215,6 @@
 		\end{tabular}
 		\npnoround
 		\\\\\newline
-		Ponieważ Pajek przy wszystkich obliczeniach podaje jak długo wykonywały się obliczenia, nie ma było potrzeby stosowania dodatkowych narzędzi do przeprowadzenia pomiarów. Okazuje się, że wszystkie obliczenia zostały wykonane w czasie krótszym niż sekunda. O ile dla wyznaczenia długości najdłuższej spójnej składowej, nie odbiegają one od czasów w NetworkX, to już zdecydowanie szybsze wyznaczenia wielkości pośrednictwa nastąpiło znacznie szybciej. Różnica ta może wynikać z dobrej optymalizacji algorytmów w Pajeku oraz z ograniczeń interpretera Pythona. Raport z programu Pajek znajduje się w pliku \texttt{pajek\_report.rep}.
+		Ponieważ Pajek przy wszystkich obliczeniach podaje jak długo wykonywały sie obliczenia, nie ma było potrzeby stosowania dodatkowych narzędzi do przeprowadzenia pomiarów. Okazuje się, że wszystkie obliczenia zostały wykonane w czasie krótszym niż sekunda. O ile dla wyznaczenia długości najdłuższej spójnej składowej, nie odbiegają one od czasów w NetworkX, to już zdecydowanie szybsze wyznaczenia wielkości pośrednictwa nastąpiło znacznie szybciej. Różnica ta może wynikać z dobrej optymalizacji algorytmów w Pajeku oraz z ograniczeń interpretera Pythona. Raport z programu Pajek znajduje się w pliku \texttt{pajek\_report.rep}.
 \end{document}
 
